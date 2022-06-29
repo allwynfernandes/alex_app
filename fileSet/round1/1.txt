@@ -1,0 +1,11 @@
+Hi Alf, please review the attached files.
+
+ 
+
+The csv file is from NetSuite, and the xlsx file are multiple payments received from the customer.
+
+On Sheet6, there is a payment containing a credit. Everything else does not have a credit.
+
+ 
+
+Please test your system on all the sheets except Sheet6, and produce CSV files so I can test them on my end. 

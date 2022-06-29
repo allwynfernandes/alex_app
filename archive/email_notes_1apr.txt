@@ -1,0 +1,11 @@
+Hi Alf, I created the video, and I walked through every step of the payment application process.
+
+ 
+
+Please remember:
+
+ 
+
+    Sum of “Invoice Application” must be equal to “Payment Amount”
+    Discount must be equal to the difference of (“Payment Amount” PLUS credit amount) and sum of all open invoices being paid.
+    Sum of “Invoice Application”, Discount, and Credit must be equal to the sum of all open invoices in NetSuite

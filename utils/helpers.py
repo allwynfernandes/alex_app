@@ -1,6 +1,7 @@
 import logging
 import datetime
 import pandas as pd
+import numpy as np
 from validations import logic
 timestamp = datetime.datetime.now().strftime('%b-%d-%H%M%S')
 logging.basicConfig(filename=f'app_debug_{timestamp}.log', 
@@ -49,8 +50,9 @@ def get_clean(df):
 #====================
 def force_convert_dtypes(df, tableType):
     if tableType=='cr':
-        df = df.astype({'PO#':'string', 'Amount Paid':'float', 'Payment Reference':'string', 'Payment Date':'string',
+        df = df.astype({'PO#':'string', 'Amount Paid':'float', 'Payment Reference':'float', 'Payment Date':'string',
        'Payment Amount':'float', 'Payment Type':'string', 'Discount Percent Limit':'float'})
+        df['Payment Reference'] = df['Payment Reference'].astype(np.int64,errors='ignore') 
     if tableType=='ns':
         df = df.astype({'Internal ID':'string', 'Date':'string', 'Type':'string', 'Document Number':'string', 'Name':'string',
        'Amount Remaining':'float', 'Amount':'float', 'Memo':'string', 'PO/Check Number':'string', 'Status':'string',
@@ -119,7 +121,7 @@ def get_processed(crin, nsin, crcm, nscm, CONST_payment_ref, CONST_payment_amt, 
                 'Discount Percent':lambda x:  (x['Discount Amount'] / x['Amount Remaining']).round(2).mul(100), 
                 'WithinTolerence':lambda x: x['Discount Percent'].apply(withinTolerance, args=(2,)).map({True:'Yes', False:'No'}), # within tolerance of +- 20%  of 2 %
                 'Invoice Application': lambda x: x['Amount Paid'],
-                'Payment #': str(CONST_payment_typ)+str(CONST_payment_ref),
+                'Payment #': str(CONST_payment_typ)+" "+str(CONST_payment_ref),
                 'Payment Amount': CONST_payment_amt,
                 'External ID': f"PA{CONST_payment_typ}{CONST_payment_ref}",
                 'Memo':f"{CONST_payment_typ} {CONST_payment_ref}"
